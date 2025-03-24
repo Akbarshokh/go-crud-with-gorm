@@ -31,7 +31,7 @@ A RESTful movie management API built with:
 Copy `.env.example` and rename to `.env`, then update:
 
 ```env
-DB_HOST=movie_postgres
+DB_HOST=db
 DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=postgres
