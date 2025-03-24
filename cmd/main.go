@@ -4,10 +4,12 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/movie-app-crud-gorm/api/docs"
 	"github.com/movie-app-crud-gorm/internal/bootstrap"
-	"github.com/movie-app-crud-gorm/internal/rest"
 	"go.uber.org/fx"
 )
 
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
 func main() {
 	_ = godotenv.Load()
 
@@ -17,6 +19,5 @@ func main() {
 	docs.SwaggerInfo.Host = "localhost:8080"
 	docs.SwaggerInfo.Schemes = []string{"http"}
 	fx.New(
-		bootstrap.Modules,
-		rest.Module).Run()
+		bootstrap.Modules).Run()
 }

@@ -21,7 +21,7 @@ func RegisterRoutes(
 	router *gin.Engine,
 	movieHandler *MovieHandler,
 	authHandler *AuthHandler,
-	middleware JwtMiddleware,
+	middleware *JwtMiddleware,
 ) {
 	// Auth endpoints
 	noAuth := router.Group("")

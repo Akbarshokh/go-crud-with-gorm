@@ -68,10 +68,11 @@ func fromDomainToView(m []domain.Movie) []MovieResponse {
 
 // Create Movie godoc
 // @Summary Create a new movie record in db
-// @Router /api/v1/movie [POST]
+// @Router /movies [POST]
 // @Tags Movie
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param request body MovieRequest true "Movie Data"
 // @Success 200 {object} R{data=idResponse}
 // @Failure 422 {object} R{data=idResponse}
@@ -103,10 +104,11 @@ func (h *MovieHandler) Create(c *gin.Context) {
 
 // GetAll Movies godoc
 // @Summary Retrieve all movies from db
-// @Router /api/v1/movies [GET]
+// @Router /movies [GET]
 // @Tags Movie
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Success 200 {object} R{data=[]MovieResponse}
 // @Failure 422 {object} R{data=[]MovieResponse}
 // @Failure 500 {object} R{data=[]MovieResponse}
@@ -121,10 +123,11 @@ func (h *MovieHandler) GetAll(c *gin.Context) {
 
 // GetByID Movie godoc
 // @Summary Retrieve a specific movie by ID
-// @Router /api/v1/movies/{id}  [POST]
+// @Router /movies/{id}  [POST]
 // @Tags Movie
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Success 200 {object} R{data=MovieResponse}
 // @Failure 422 {object} R{data=MovieResponse}
 // @Failure 500 {object} R{data=MovieResponse}
@@ -160,10 +163,11 @@ func (h *MovieHandler) GetByID(c *gin.Context) {
 
 // Update Movie godoc
 // @Summary Update an existing movie record
-// @Router /api/v1/movies/{id}  [PUT]
+// @Router /movies/{id}  [PUT]
 // @Tags Movie
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Success 200 {object} R{data=result}
 // @Failure 422 {object} R{data=result}
 // @Failure 500 {object} R{data=result}
@@ -215,10 +219,11 @@ func (h *MovieHandler) Update(c *gin.Context) {
 
 // Delete Movie godoc
 // @Summary Delete a movie record by ID
-// @Router /api/v1/movies/{id}  [DELETE]
+// @Router /movies/{id}  [DELETE]
 // @Tags Movie
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Success 200 {object} R{data=result}
 // @Failure 422 {object} R{data=result}
 // @Failure 500 {object} R{data=result}

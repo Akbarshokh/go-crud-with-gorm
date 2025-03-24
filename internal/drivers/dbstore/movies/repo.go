@@ -20,9 +20,9 @@ func New(db *gorm.DB, logger logger.Logger) *Repo {
 }
 
 func (repo *Repo) Create(ctx context.Context, request domain.Movie) (uint, error) {
-	var logMsg = "repo.Movie.Create "
+	var logMsg = "repo.Movies.Create "
 
-	data := Movie{
+	data := Movies{
 		Model:    gorm.Model{ID: request.ID},
 		Title:    request.Title,
 		Director: request.Director,
@@ -41,8 +41,8 @@ func (repo *Repo) Create(ctx context.Context, request domain.Movie) (uint, error
 
 func (repo *Repo) GetAll(ctx context.Context) ([]domain.Movie, error) {
 	var (
-		logMsg   = "repo.Movie.GetAll "
-		gormData []Movie
+		logMsg   = "repo.Movies.GetAll "
+		gormData []Movies
 		result   []domain.Movie
 	)
 
@@ -60,8 +60,8 @@ func (repo *Repo) GetAll(ctx context.Context) ([]domain.Movie, error) {
 
 func (repo *Repo) GetByID(ctx context.Context, id uint) (domain.Movie, error) {
 	var (
-		logMsg   = "repo.Movie.GetByID "
-		gormData Movie
+		logMsg   = "repo.Movies.GetByID "
+		gormData Movies
 	)
 
 	if err := repo.db.WithContext(ctx).First(&gormData, id).Error; err != nil {
@@ -73,7 +73,7 @@ func (repo *Repo) GetByID(ctx context.Context, id uint) (domain.Movie, error) {
 }
 
 func (repo *Repo) Update(ctx context.Context, request domain.Movie) error {
-	var logMsg = "repo.Movie.Update "
+	var logMsg = "repo.Movies.Update "
 
 	err := repo.db.WithContext(ctx).Save(&request).Error
 	if err != nil {
@@ -85,9 +85,9 @@ func (repo *Repo) Update(ctx context.Context, request domain.Movie) error {
 }
 
 func (repo *Repo) Delete(ctx context.Context, id uint) error {
-	var logMsg = "repo.Movie.Delete "
+	var logMsg = "repo.Movies.Delete "
 
-	err := repo.db.WithContext(ctx).Delete(&Movie{}, id).Error
+	err := repo.db.WithContext(ctx).Delete(&Movies{}, id).Error
 	if err != nil {
 		repo.log.Error(logMsg+" repo.db.Delete failed", logger.Error(err))
 		return err

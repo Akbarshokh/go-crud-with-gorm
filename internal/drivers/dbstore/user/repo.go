@@ -20,7 +20,7 @@ func New(db *gorm.DB, log logger.Logger) *Repo {
 	}
 }
 
-type UserGorm struct {
+type Users struct {
 	ID       string `gorm:"primaryKey"`
 	Email    string `gorm:"uniqueIndex;not null"`
 	Password string `gorm:"not null"`
@@ -29,7 +29,7 @@ type UserGorm struct {
 func (r *Repo) CreateUser(ctx context.Context, user domain.User) (string, error) {
 	var logMsg = "repo.user.CreateUser "
 	id := uuid.NewString()
-	dbUser := UserGorm{
+	dbUser := Users{
 		ID:       id,
 		Email:    user.Email,
 		Password: user.Password,
@@ -44,7 +44,7 @@ func (r *Repo) CreateUser(ctx context.Context, user domain.User) (string, error)
 func (r *Repo) GetByID(ctx context.Context, userID string) (domain.User, error) {
 	var (
 		logMsg = "repo.user.GetByID "
-		user   UserGorm
+		user   Users
 	)
 	if err := r.db.WithContext(ctx).First(&user, "id = ?", userID).Error; err != nil {
 		r.log.Error(logMsg+"GetByEmail failed", logger.Error(err))
@@ -60,7 +60,7 @@ func (r *Repo) GetByID(ctx context.Context, userID string) (domain.User, error) 
 func (r *Repo) GetByEmail(ctx context.Context, email string) (domain.User, error) {
 	var (
 		logMsg = "repo.user.GetByEmail "
-		user   UserGorm
+		user   Users
 	)
 	if err := r.db.WithContext(ctx).Where("email = ?", email).First(&user).Error; err != nil {
 		r.log.Error(logMsg+"GetByEmail failed", logger.Error(err))

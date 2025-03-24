@@ -1,4 +1,21 @@
 definitions:
+  rest.JwtTokens:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  rest.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
   rest.MovieRequest:
     properties:
       director:
@@ -37,6 +54,17 @@ definitions:
       status:
         type: string
     type: object
+  rest.SignUp:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
   rest.idResponse:
     properties:
       id:
@@ -47,10 +75,103 @@ definitions:
       result:
         type: boolean
     type: object
+  rest.userIdResponse:
+    properties:
+      id:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
-  /api/v1/movie:
+  /login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/rest.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.JwtTokens'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.JwtTokens'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.JwtTokens'
+              type: object
+      summary: Log in
+      tags:
+      - Auth
+  /movies:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/rest.MovieResponse'
+                  type: array
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/rest.MovieResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/rest.MovieResponse'
+                  type: array
+              type: object
+      security:
+      - Bearer: []
+      summary: Retrieve all movies from db
+      tags:
+      - Movie
     post:
       consumes:
       - application/json
@@ -91,53 +212,12 @@ paths:
                 data:
                   $ref: '#/definitions/rest.idResponse'
               type: object
+      security:
+      - Bearer: []
       summary: Create a new movie record in db
       tags:
       - Movie
-  /api/v1/movies:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/rest.R'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/rest.MovieResponse'
-                  type: array
-              type: object
-        "422":
-          description: Unprocessable Entity
-          schema:
-            allOf:
-            - $ref: '#/definitions/rest.R'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/rest.MovieResponse'
-                  type: array
-              type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            allOf:
-            - $ref: '#/definitions/rest.R'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/rest.MovieResponse'
-                  type: array
-              type: object
-      summary: Retrieve all movies from db
-      tags:
-      - Movie
-  /api/v1/movies/{id}:
+  /movies/{id}:
     delete:
       consumes:
       - application/json
@@ -171,6 +251,8 @@ paths:
                 data:
                   $ref: '#/definitions/rest.result'
               type: object
+      security:
+      - Bearer: []
       summary: Delete a movie record by ID
       tags:
       - Movie
@@ -207,6 +289,8 @@ paths:
                 data:
                   $ref: '#/definitions/rest.MovieResponse'
               type: object
+      security:
+      - Bearer: []
       summary: Retrieve a specific movie by ID
       tags:
       - Movie
@@ -243,7 +327,58 @@ paths:
                 data:
                   $ref: '#/definitions/rest.result'
               type: object
+      security:
+      - Bearer: []
       summary: Update an existing movie record
       tags:
       - Movie
+  /sign-up:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/rest.SignUp'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.userIdResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.userIdResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.userIdResponse'
+              type: object
+      summary: Sign Up
+      tags:
+      - Auth
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
