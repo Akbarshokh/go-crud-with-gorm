@@ -21,8 +21,8 @@ type JwtMiddleware struct {
 	userRepo domain.UserRepository
 }
 
-func NewJwtMiddleware() *JwtMiddleware {
-	return &JwtMiddleware{}
+func NewJwtMiddleware(userRepo domain.UserRepository) *JwtMiddleware {
+	return &JwtMiddleware{userRepo: userRepo}
 }
 
 func (m *JwtMiddleware) Middleware() gin.HandlerFunc {
