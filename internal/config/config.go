@@ -12,6 +12,8 @@ type Config struct {
 	HTTPPort string `env:"HTTP_PORT,default=:8080"`
 
 	Postgres PostgresConfig
+
+	Jwt JWTConfig
 }
 
 type PostgresConfig struct {
@@ -21,6 +23,12 @@ type PostgresConfig struct {
 	Password string `env:"POSTGRES_PASSWORD,default=postgres"`
 	DBName   string `env:"POSTGRES_DB,default=movie_db"`
 	SSLMode  string `env:"POSTGRES_SSLMODE,default=disable"`
+}
+
+type JWTConfig struct {
+	SecretKey       string `env:"JWT_SECRET"`
+	AccessTokenTTL  int    `env:"JWT_ACCESS_TTL_MIN,default=15"`
+	RefreshTokenTTL int    `env:"JWT_REFRESH_TTL_HOURS,default=720"`
 }
 
 func (p PostgresConfig) DSN() string {

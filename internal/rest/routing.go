@@ -20,13 +20,21 @@ func RegisterRoutes(
 	lc fx.Lifecycle,
 	router *gin.Engine,
 	movieHandler *MovieHandler,
+	authHandler *AuthHandler,
+	middleware JwtMiddleware,
 ) {
+	// Auth endpoints
+	noAuth := router.Group("")
+	noAuth.POST("/sign-up", authHandler.SignUp)
+	noAuth.POST("/login", authHandler.Login)
+
 	// Movie endpoints
-	router.POST("/movies", movieHandler.Create)
-	router.GET("/movies/:id", movieHandler.GetByID)
-	router.GET("/movies", movieHandler.GetAll)
-	router.PUT("/movies/:id", movieHandler.Update)
-	router.DELETE("/movies/:id", movieHandler.Delete)
+	movies := router.Group("", middleware.Middleware())
+	movies.POST("/movies", movieHandler.Create)
+	movies.GET("/movies/:id", movieHandler.GetByID)
+	movies.GET("/movies", movieHandler.GetAll)
+	movies.PUT("/movies/:id", movieHandler.Update)
+	movies.DELETE("/movies/:id", movieHandler.Delete)
 
 	// Swagger endpoint
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
