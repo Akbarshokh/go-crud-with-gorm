@@ -3,6 +3,7 @@ package movies_repo
 import (
 	"context"
 	"github.com/movie-app-crud-gorm/internal/domain"
+	"github.com/movie-app-crud-gorm/internal/errs"
 	"github.com/movie-app-crud-gorm/internal/pkg/logger"
 	"gorm.io/gorm"
 )
@@ -53,6 +54,11 @@ func (repo *Repo) GetAll(ctx context.Context) ([]domain.Movie, error) {
 
 	for _, val := range gormData {
 		result = append(result, ToDomain(val))
+	}
+
+	if len(result) == 0 {
+		repo.log.Error(logMsg + "no records found")
+		return nil, errs.ErrNotFound
 	}
 
 	return result, nil

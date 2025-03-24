@@ -221,6 +221,12 @@ paths:
     delete:
       consumes:
       - application/json
+      parameters:
+      - description: Movie ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -256,9 +262,15 @@ paths:
       summary: Delete a movie record by ID
       tags:
       - Movie
-    post:
+    get:
       consumes:
       - application/json
+      parameters:
+      - description: Movie ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -297,6 +309,18 @@ paths:
     put:
       consumes:
       - application/json
+      parameters:
+      - description: Movie ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Movie Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/rest.MovieRequest'
       produces:
       - application/json
       responses:

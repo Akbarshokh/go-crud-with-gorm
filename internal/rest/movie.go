@@ -123,11 +123,12 @@ func (h *MovieHandler) GetAll(c *gin.Context) {
 
 // GetByID Movie godoc
 // @Summary Retrieve a specific movie by ID
-// @Router /movies/{id}  [POST]
+// @Router /movies/{id}  [GET]
 // @Tags Movie
 // @Accept json
 // @Produce json
 // @Security Bearer
+// @Param id path int true "Movie ID"
 // @Success 200 {object} R{data=MovieResponse}
 // @Failure 422 {object} R{data=MovieResponse}
 // @Failure 500 {object} R{data=MovieResponse}
@@ -168,6 +169,8 @@ func (h *MovieHandler) GetByID(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security Bearer
+// @Param id path int true "Movie ID"
+// @Param request body MovieRequest true "Movie Data"
 // @Success 200 {object} R{data=result}
 // @Failure 422 {object} R{data=result}
 // @Failure 500 {object} R{data=result}
@@ -224,6 +227,7 @@ func (h *MovieHandler) Update(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security Bearer
+// @Param id path int true "Movie ID"
 // @Success 200 {object} R{data=result}
 // @Failure 422 {object} R{data=result}
 // @Failure 500 {object} R{data=result}
