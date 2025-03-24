@@ -1,0 +1,249 @@
+definitions:
+  rest.MovieRequest:
+    properties:
+      director:
+        type: string
+      plot:
+        type: string
+      title:
+        type: string
+      year:
+        type: integer
+    required:
+    - director
+    - title
+    - year
+    type: object
+  rest.MovieResponse:
+    properties:
+      director:
+        type: string
+      id:
+        type: integer
+      plot:
+        type: string
+      title:
+        type: string
+      year:
+        type: integer
+    type: object
+  rest.R:
+    properties:
+      data: {}
+      error_code:
+        type: integer
+      error_note:
+        type: string
+      status:
+        type: string
+    type: object
+  rest.idResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+  rest.result:
+    properties:
+      result:
+        type: boolean
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/movie:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Movie Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/rest.MovieRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.idResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.idResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.idResponse'
+              type: object
+      summary: Create a new movie record in db
+      tags:
+      - Movie
+  /api/v1/movies:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/rest.MovieResponse'
+                  type: array
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/rest.MovieResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/rest.MovieResponse'
+                  type: array
+              type: object
+      summary: Retrieve all movies from db
+      tags:
+      - Movie
+  /api/v1/movies/{id}:
+    delete:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.result'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.result'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.result'
+              type: object
+      summary: Delete a movie record by ID
+      tags:
+      - Movie
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.MovieResponse'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.MovieResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.MovieResponse'
+              type: object
+      summary: Retrieve a specific movie by ID
+      tags:
+      - Movie
+    put:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.result'
+              type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.result'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.R'
+            - properties:
+                data:
+                  $ref: '#/definitions/rest.result'
+              type: object
+      summary: Update an existing movie record
+      tags:
+      - Movie
+swagger: "2.0"
