@@ -4,7 +4,7 @@ A RESTful movie management API built with:
 
 - Go 1.23
 - Gin
-- GORM (PostgreSQL)
+- GORM (PostgreSQL), GORM-AutoMigrate for MVP
 - Uber Fx (Dependency Injection)
 - JWT Authentication
 - Swagger docs
